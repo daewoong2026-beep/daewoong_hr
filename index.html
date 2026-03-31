@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인턴 피어그룹 평가 플랫폼</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #4F46E5;
+  --primary-light: #EEF2FF;
+  --primary-dark: #3730A3;
+  --success: #059669;
+  --success-light: #ECFDF5;
+  --warning: #D97706;
+  --warning-light: #FFFBEB;
+  --danger: #DC2626;
+  --danger-light: #FEF2F2;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+
+.app-header {
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.app-header h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-900);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-badge {
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+
+.btn-secondary {
+  background: white;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-300);
+}
+.btn-secondary:hover { background: var(--gray-50); }
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+.btn-success:hover { background: #047857; }
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+.btn-danger:hover { background: #B91C1C; }
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--gray-900);
+}
+
+/* Login */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  background: white;
+  border-radius: 20px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-card h1 {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-card p {
+  text-align: center;
+  color: var(--gray-500);
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-600);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-input-lg {
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.error-msg {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* Day selector */
+.day-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+}
+
+.day-cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.day-card {
+  background: white;
+  border: 2px solid var(--gray-200);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 280px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.day-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.day-card.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.day-card.disabled:hover {
+  border-color: var(--gray-200);
+  box-shadow: none;
+  transform: none;
+}
+
+.day-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.day-card p {
+  color: var(--gray-500);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.day-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.badge-open { background: var(--success-light); color: var(--success); }
+.badge-closed { background: var(--danger-light); color: var(--danger); }
+
+/* Evaluation form */
+.eval-progress {
+  background: var(--gray-100);
+  border-radius: 20px;
+  padding: 4px;
+  margin-bottom: 24px;
+  display: flex;
+  overflow: hidden;
+}
+
+.eval-progress-step {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 16px;
+  color: var(--gray-400);
+  transition: all 0.3s;
+}
+
+.eval-progress-step.active {
+  background: var(--primary);
+  color: white;
+}
+
+.eval-progress-step.done {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.eval-target {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--primary-light);
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+.eval-target-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.eval-target-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.eval-target-info p {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+/* Score selector */
+.score-item {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.score-item:last-child { border-bottom: none; }
+
+.score-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.score-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.score-item-desc {
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  white-space: pre-line;
+  background: var(--gray-50);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  display: none;
+}
+
+.score-item-desc.show { display: block; }
+
+.toggle-desc {
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  padding: 2px 8px;
+}
+
+.score-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.score-btn {
+  width: 48px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--gray-200);
+  background: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.score-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.score-btn.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* Category tab */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.category-tab {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--gray-300);
+  background: white;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-tab.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Peer list */
+.peer-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.peer-card {
+  padding: 14px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.peer-card:hover { border-color: var(--primary); }
+
+.peer-card.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.peer-card.done {
+  border-color: var(--success);
+  background: var(--success-light);
+}
+
+.peer-card-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gray-300);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.peer-card.active .peer-card-avatar { background: var(--primary); }
+.peer-card.done .peer-card-avatar { background: var(--success); }
+
+.peer-card-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.peer-card-status {
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+/* Admin */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--gray-100);
+  padding: 4px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+
+.admin-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--gray-500);
+  transition: all 0.2s;
+}
+
+.admin-tab.active {
+  background: white;
+  color: var(--gray-900);
+  box-shadow: var(--shadow);
+}
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--gray-50);
+  color: var(--gray-500);
+  font-weight: 500;
+  border-bottom: 1px solid var(--gray-200);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+}
+
+.data-table tr:hover td { background: var(--gray-50); }
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background: white;
+  border-radius: var(--radius);
+  padding: 28px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-open { background: var(--success-light); color: var(--success); }
+.status-closed { background: var(--danger-light); color: var(--danger); }
+.status-submitted { background: var(--success-light); color: var(--success); }
+.status-pending { background: var(--warning-light); color: var(--warning); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--gray-800);
+  color: white;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  z-index: 300;
+  animation: slideUp 0.3s ease;
+  box-shadow: var(--shadow-lg);
+}
+
+.toast-success { background: var(--success); }
+.toast-error { background: var(--danger); }
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 16px; }
+  .card { padding: 16px; }
+  .login-card { padding: 32px 24px; margin: 16px; }
+  .day-cards { flex-direction: column; align-items: center; }
+  .peer-list { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-tabs { flex-wrap: wrap; }
+  .score-buttons { flex-wrap: wrap; }
+  .data-table { font-size: 12px; }
+  .data-table th, .data-table td { padding: 8px 6px; }
+}
+
+/* Loading spinner */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 40px auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Document editor */
+.doc-editor {
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.doc-editor-header {
+  background: var(--gray-50);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.doc-editor-body {
+  padding: 16px;
+}
+
+.doc-editor-body textarea {
+  width: 100%;
+  min-height: 300px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.8;
+  resize: vertical;
+}
+
+.doc-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.doc-list-item:hover { background: var(--gray-50); }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--gray-400);
+}
+.empty-state p { font-size: 14px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// ============================================================
+// Supabase 설정 - 여기에 본인의 URL과 KEY를 입력하세요
+// ============================================================
+const SUPABASE_URL = 'https://pmfrxiccvvsovofcgcly.supabase.co';
+const SUPABASE_ANON_KEY = ' eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZnJ4aWNjdnZzb3ZvZmNnY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MzQwMzQsImV4cCI6MjA5MDUxMDAzNH0._NUYL2RqyszKOn_xPQnS7qnhDW6JNFUN0g3TZtHZORc';
+
+// Simple Supabase client
+const supabase = {
+  from: (table) => ({
+    select: async (columns = '*') => {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${columns}`, {
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+      });
+      const data = await res.json();
+      return { data, error: res.ok ? null : data };
+    },
+    selectWhere: async (columns, filters) => {
+      const params = Object.entries(filters).map(([k,v]) => `${k}=eq.${v}`).join('&');
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${columns}&${params}`, {
+        headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+      });
+      const data = await res.json();
+      return { data, error: res.ok ? null : data };
+    },
+    insert: async (body) => {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      return { data, error: res.ok ? null : data };
+    },
+    update: async (body, filters) => {
+      const params = Object.entries(filters).map(([k,v]) => `${k}=eq.${v}`).join('&');
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      return { data, error: res.ok ? null : data };
+    },
+    delete: async (filters) => {
+      const params = Object.entries(filters).map(([k,v]) => `${k}=eq.${v}`).join('&');
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+        method: 'DELETE',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        }
+      });
+      return { error: res.ok ? null : await res.json() };
+    },
+    rpc: async (fn, params) => {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+      });
+      const data = await res.json();
+      return { data, error: res.ok ? null : data };
+    }
+  }),
+  rpc: async (fn, params) => {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+    const data = await res.json();
+    return { data, error: res.ok ? null : data };
+  }
+};
+
+// Helper for filtered queries
+async function query(table, select = '*', filters = '', opts = {}) {
+  let url = `${SUPABASE_URL}/rest/v1/${table}?select=${encodeURIComponent(select)}`;
+  if (filters) url += `&${filters}`;
+  if (opts.order) url += `&order=${opts.order}`;
+  const res = await fetch(url, {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+  });
+  return await res.json();
+}
+
+async function insert(table, body) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return await res.json();
+}
+
+async function update(table, body, filters) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return await res.json();
+}
+
+async function remove(table, filters) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+const { useState, useEffect, useCallback, useMemo } = React;
+
+// ============================================================
+// Toast Component
+// ============================================================
+function Toast({ message, type, onClose }) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 3000);
+    return () => clearTimeout(t);
+  }, []);
+  return <div className={`toast toast-${type}`}>{message}</div>;
+}
+
+// ============================================================
+// Login Screen
+// ============================================================
+function LoginScreen({ onLogin }) {
+  const [empId, setEmpId] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!empId.trim() || !name.trim()) {
+      setError('사번과 이름을 모두 입력해주세요.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const users = await query('users', '*', `employee_id=eq.${empId.trim()}&name=eq.${encodeURIComponent(name.trim())}`);
+      if (users.length === 0) {
+        setError('등록되지 않은 사번이거나 이름이 일치하지 않습니다.');
+      } else {
+        onLogin(users[0]);
+      }
+    } catch (err) {
+      setError('서버 연결에 실패했습니다. Supabase 설정을 확인해주세요.');
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="login-wrapper">
+      <div className="login-card">
+        <h1>피어그룹 평가</h1>
+        <p>인턴사원 피어그룹 평가 플랫폼</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>사번</label>
+            <input className="form-input form-input-lg" placeholder="사번을 입력하세요" value={empId} onChange={e => setEmpId(e.target.value)} />
+          </div>
+          <div className="form-group">
+            <label>이름</label>
+            <input className="form-input form-input-lg" placeholder="이름을 입력하세요" value={name} onChange={e => setName(e.target.value)} />
+          </div>
+          {error && <div className="error-msg">{error}</div>}
+          <button className="btn btn-primary" style={{width:'100%', marginTop:16, padding:'14px'}} disabled={loading}>
+            {loading ? '로그인 중...' : '로그인'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Day Selector
+// ============================================================
+function DaySelector({ settings, onSelect }) {
+  return (
+    <div className="day-selector">
+      <div>
+        <h2 style={{textAlign:'center', marginBottom:32, fontSize:20, fontWeight:600}}>평가할 일차를 선택하세요</h2>
+        <div className="day-cards">
+          {[1, 2].map(day => {
+            const setting = settings.find(s => s.day_number === day);
+            const isOpen = setting?.is_open;
+            return (
+              <div
+                key={day}
+                className={`day-card ${!isOpen ? 'disabled' : ''}`}
+                onClick={() => isOpen && onSelect(day)}
+              >
+                <h2>{day}일차</h2>
+                <p>{day === 1 ? '일하는 방식 + 조별 과제 결과물\n본인평가 + 피어평가' : '워킹백워드 문서 평가\n본인평가 + 피어평가 + 서술형'}</p>
+                <span className={`day-badge ${isOpen ? 'badge-open' : 'badge-closed'}`}>
+                  {isOpen ? '평가 진행중' : '평가 마감'}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Score Input Component
+// ============================================================
+function ScoreInput({ criteria, scores, onScoreChange, showDescriptions }) {
+  const [openDescs, setOpenDescs] = useState({});
+
+  return (
+    <div>
+      {criteria.map(c => (
+        <div key={c.id} className="score-item">
+          <div className="score-item-header">
+            <div>
+              <span className="score-item-name">
+                {c.item_order}. {c.item_name}
+              </span>
+              {c.item_description && (
+                <button className="toggle-desc" onClick={() => setOpenDescs(prev => ({...prev, [c.id]: !prev[c.id]}))}>
+                  {openDescs[c.id] ? '기준 접기 ▲' : '채점 기준 ▼'}
+                </button>
+              )}
+            </div>
+            <div className="score-buttons">
+              {[1,2,3,4,5].map(s => (
+                <button
+                  key={s}
+                  className={`score-btn ${scores[c.id] === s ? 'selected' : ''}`}
+                  onClick={() => onScoreChange(c.id, s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+          {c.item_description && (
+            <div className={`score-item-desc ${openDescs[c.id] ? 'show' : ''}`}>
+              {c.item_description}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================
+// Evaluation Screen (사용자)
+// ============================================================
+function EvaluationScreen({ user, dayNumber, onBack, showToast }) {
+  const [loading, setLoading] = useState(true);
+  const [criteria, setCriteria] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState('');
+  const [currentTarget, setCurrentTarget] = useState(null);
+  const [scores, setScores] = useState({});
+  const [strengths, setStrengths] = useState('');
+  const [improvements, setImprovements] = useState('');
+  const [submittedEvals, setSubmittedEvals] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    loadData();
+  }, [dayNumber]);
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      // Load criteria
+      const crit = await query('eval_criteria', '*', `day_number=eq.${dayNumber}`, { order: 'category,item_order' });
+      setCriteria(crit);
+      const cats = [...new Set(crit.map(c => c.category))];
+      setCategories(cats);
+      if (cats.length > 0) setCurrentCategory(cats[0]);
+
+      // Load group members
+      const members = await query('group_members', '*, groups!inner(day_number, group_name), users!inner(*)',
+        `groups.day_number=eq.${dayNumber}&user_id=eq.${user.id}`);
+      
+      if (members.length > 0) {
+        const groupId = members[0].group_id;
+        const allMembers = await query('group_members', '*, users!inner(*)', `group_id=eq.${groupId}`);
+        setGroupMembers(allMembers.map(m => m.users));
+      }
+
+      // Load submitted evaluations
+      const evals = await query('evaluations', '*', `day_number=eq.${dayNumber}&evaluator_id=eq.${user.id}`);
+      setSubmittedEvals(evals);
+    } catch (err) {
+      showToast('데이터를 불러오는데 실패했습니다.', 'error');
+    }
+    setLoading(false);
+  };
+
+  const isSubmitted = (targetId, category) => {
+    return submittedEvals.some(e => e.evaluatee_id === targetId && e.category === category);
+  };
+
+  const allTargets = useMemo(() => {
+    if (!currentCategory) return [];
+    // Self first, then peers
+    const self = groupMembers.find(m => m.id === user.id);
+    const peers = groupMembers.filter(m => m.id !== user.id);
+    return self ? [self, ...peers] : peers;
+  }, [groupMembers, currentCategory, user.id]);
+
+  const handleScoreChange = (criteriaId, score) => {
+    setScores(prev => ({ ...prev, [criteriaId]: score }));
+  };
+
+  const currentCriteria = criteria.filter(c => c.category === currentCategory);
+
+  const handleSubmit = async () => {
+    // Validate all scores filled
+    const missingScores = currentCriteria.filter(c => !scores[c.id]);
+    if (missingScores.length > 0) {
+      showToast(`모든 항목에 점수를 입력해주세요. (${missingScores.length}개 미입력)`, 'error');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const isSelf = currentTarget.id === user.id;
+      
+      // Insert evaluation
+      const evalData = await insert('evaluations', {
+        day_number: dayNumber,
+        evaluator_id: user.id,
+        evaluatee_id: currentTarget.id,
+        is_self_eval: isSelf,
+        category: currentCategory
+      });
+
+      const evalId = evalData[0].id;
+
+      // Insert scores
+      const scoreRows = currentCriteria.map(c => ({
+        evaluation_id: evalId,
+        criteria_id: c.id,
+        score: scores[c.id]
+      }));
+      await insert('evaluation_scores', scoreRows);
+
+      // Insert feedback if day 2
+      if (dayNumber === 2 && (strengths.trim() || improvements.trim())) {
+        await insert('evaluation_feedback', {
+          evaluation_id: evalId,
+          strengths: strengths.trim() || null,
+          improvements: improvements.trim() || null
+        });
+      }
+
+      showToast(`${currentTarget.name}님에 대한 ${currentCategory} 평가가 제출되었습니다.`, 'success');
+      
+      // Reset and reload
+      setScores({});
+      setStrengths('');
+      setImprovements('');
+      setCurrentTarget(null);
+      await loadData();
+    } catch (err) {
+      showToast('제출에 실패했습니다. 이미 제출한 평가인지 확인해주세요.', 'error');
+    }
+    setSubmitting(false);
+  };
+
+  if (loading) return <div className="container"><div className="spinner"></div></div>;
+
+  if (groupMembers.length === 0) {
+    return (
+      <div className="container">
+        <div className="card empty-state">
+          <h3>조 배정 정보가 없습니다</h3>
+          <p>관리자에게 {dayNumber}일차 조 편성을 요청해주세요.</p>
+          <button className="btn btn-secondary" onClick={onBack} style={{marginTop:16}}>← 돌아가기</button>
+        </div>
+      </div>
+    );
+  }
+
+  // Count completed
+  const totalRequired = categories.reduce((acc, cat) => acc + allTargets.length, 0);
+  const completedCount = submittedEvals.length;
+
+  return (
+    <div className="container">
+      <button className="btn btn-secondary btn-sm" onClick={onBack} style={{marginBottom:16}}>← 일차 선택으로</button>
+      
+      <div className="card" style={{marginBottom:16}}>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <span style={{fontWeight:600}}>{dayNumber}일차 평가</span>
+          <span style={{fontSize:13, color:'var(--gray-500)'}}>
+            진행률: {completedCount} / {totalRequired} 완료
+          </span>
+        </div>
+        <div style={{background:'var(--gray-100)', borderRadius:8, height:8, marginTop:8, overflow:'hidden'}}>
+          <div style={{background:'var(--primary)', height:'100%', width:`${totalRequired > 0 ? (completedCount/totalRequired*100) : 0}%`, borderRadius:8, transition:'width 0.3s'}}></div>
+        </div>
+      </div>
+
+      {/* Category tabs */}
+      <div className="category-tabs">
+        {categories.map(cat => (
+          <button
+            key={cat}
+            className={`category-tab ${currentCategory === cat ? 'active' : ''}`}
+            onClick={() => { setCurrentCategory(cat); setCurrentTarget(null); setScores({}); setStrengths(''); setImprovements(''); }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Peer list */}
+      <div className="card">
+        <div className="card-title">평가 대상 선택</div>
+        <div className="peer-list">
+          {allTargets.map(target => {
+            const done = isSubmitted(target.id, currentCategory);
+            const isActive = currentTarget?.id === target.id;
+            const isSelf = target.id === user.id;
+            return (
+              <div
+                key={target.id}
+                className={`peer-card ${isActive ? 'active' : ''} ${done ? 'done' : ''}`}
+                onClick={() => {
+                  if (!done) {
+                    setCurrentTarget(target);
+                    setScores({});
+                    setStrengths('');
+                    setImprovements('');
+                  }
+                }}
+              >
+                <div className="peer-card-avatar">{target.name[0]}</div>
+                <div>
+                  <div className="peer-card-name">{target.name} {isSelf ? '(본인)' : ''}</div>
+                  <div className="peer-card-status">{done ? '✓ 제출완료' : '미제출'}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Score form */}
+      {currentTarget && !isSubmitted(currentTarget.id, currentCategory) && (
+        <div className="card">
+          <div className="eval-target">
+            <div className="eval-target-avatar">{currentTarget.name[0]}</div>
+            <div className="eval-target-info">
+              <h3>{currentTarget.name} {currentTarget.id === user.id ? '(본인평가)' : ''}</h3>
+              <p>{currentCategory} 평가</p>
+            </div>
+          </div>
+
+          <ScoreInput
+            criteria={currentCriteria}
+            scores={scores}
+            onScoreChange={handleScoreChange}
+          />
+
+          {/* Day 2 feedback */}
+          {dayNumber === 2 && (
+            <div style={{marginTop:20}}>
+              <div className="form-group">
+                <label>잘한 점</label>
+                <textarea className="form-input" placeholder="잘한 점을 작성해주세요..." value={strengths} onChange={e => setStrengths(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label>개선할 점</label>
+                <textarea className="form-input" placeholder="개선할 점을 작성해주세요..." value={improvements} onChange={e => setImprovements(e.target.value)} />
+              </div>
+            </div>
+          )}
+
+          <div style={{display:'flex', justifyContent:'flex-end', gap:8, marginTop:20}}>
+            <button className="btn btn-secondary" onClick={() => { setCurrentTarget(null); setScores({}); }}>취소</button>
+            <button className="btn btn-primary" onClick={handleSubmit} disabled={submitting}>
+              {submitting ? '제출 중...' : '평가 제출'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Document section for Day 2 */}
+      {dayNumber === 2 && <DocumentSection user={user} showToast={showToast} />}
+    </div>
+  );
+}
+
+// ============================================================
+// Document Section (2일차 문서 작성)
+// ============================================================
+function DocumentSection({ user, showToast }) {
+  const [docs, setDocs] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadDocs(); }, []);
+
+  const loadDocs = async () => {
+    setLoading(true);
+    const data = await query('documents', '*, users!inner(name)', `author_id=eq.${user.id}`, { order: 'created_at.desc' });
+    setDocs(data);
+    setLoading(false);
+  };
+
+  const handleSave = async () => {
+    if (!title.trim()) {
+      showToast('제목을 입력해주세요.', 'error');
+      return;
+    }
+    try {
+      if (editing) {
+        await update('documents', { title: title.trim(), content, updated_at: new Date().toISOString() }, `id=eq.${editing.id}`);
+        showToast('문서가 수정되었습니다.', 'success');
+      } else {
+        await insert('documents', { author_id: user.id, title: title.trim(), content, day_number: 2 });
+        showToast('문서가 저장되었습니다.', 'success');
+      }
+      setEditing(null);
+      setTitle('');
+      setContent('');
+      loadDocs();
+    } catch (err) {
+      showToast('저장에 실패했습니다.', 'error');
+    }
+  };
+
+  return (
+    <div className="card" style={{marginTop:20}}>
+      <div className="card-title">워킹백워드 문서</div>
+      
+      {editing !== null || docs.length === 0 ? (
+        <div className="doc-editor">
+          <div className="doc-editor-header">
+            <input
+              className="form-input"
+              placeholder="문서 제목"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              style={{border:'none', background:'transparent', fontWeight:600, fontSize:16}}
+            />
+          </div>
+          <div className="doc-editor-body">
+            <textarea
+              placeholder="내용을 작성하세요..."
+              value={content}
+              onChange={e => setContent(e.target.value)}
+            />
+          </div>
+          <div style={{padding:'12px 16px', display:'flex', gap:8, justifyContent:'flex-end', borderTop:'1px solid var(--gray-200)'}}>
+            {docs.length > 0 && (
+              <button className="btn btn-secondary btn-sm" onClick={() => { setEditing(null); setTitle(''); setContent(''); }}>취소</button>
+            )}
+            <button className="btn btn-primary btn-sm" onClick={handleSave}>
+              {editing ? '수정 저장' : '저장'}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <button className="btn btn-primary btn-sm" onClick={() => { setEditing('new'); setTitle(''); setContent(''); }} style={{marginBottom:12}}>
+            + 새 문서 작성
+          </button>
+          {docs.map(doc => (
+            <div key={doc.id} className="doc-list-item" onClick={() => { setEditing(doc); setTitle(doc.title); setContent(doc.content || ''); }}>
+              <div>
+                <div style={{fontWeight:500}}>{doc.title}</div>
+                <div style={{fontSize:12, color:'var(--gray-400)', marginTop:2}}>
+                  {new Date(doc.updated_at).toLocaleString('ko-KR')}
+                </div>
+              </div>
+              <span style={{fontSize:12, color:'var(--primary)'}}>수정 →</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
+// Admin Panel
+// ============================================================
+function AdminPanel({ user, showToast }) {
+  const [tab, setTab] = useState('settings');
+  const [settings, setSettings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadSettings(); }, []);
+
+  const loadSettings = async () => {
+    const data = await query('eval_settings', '*');
+    setSettings(data);
+    setLoading(false);
+  };
+
+  const toggleEval = async (dayNum, currentOpen) => {
+    try {
+      const body = {
+        is_open: !currentOpen,
+        ...(currentOpen ? { closed_at: new Date().toISOString() } : { opened_at: new Date().toISOString() })
+      };
+      await update('eval_settings', body, `day_number=eq.${dayNum}`);
+      showToast(`${dayNum}일차 평가가 ${currentOpen ? '마감' : '오픈'}되었습니다.`, 'success');
+      loadSettings();
+    } catch (err) {
+      showToast('설정 변경에 실패했습니다.', 'error');
+    }
+  };
+
+  const tabs = [
+    { id: 'settings', label: '평가 설정' },
+    { id: 'groups', label: '조 편성' },
+    { id: 'users', label: '인원 관리' },
+    { id: 'status', label: '제출 현황' },
+    { id: 'scores', label: '점수 집계' },
+    { id: 'feedback', label: '서술형 피드백' },
+  ];
+
+  return (
+    <div className="container">
+      <div className="admin-tabs">
+        {tabs.map(t => (
+          <button key={t.id} className={`admin-tab ${tab === t.id ? 'active' : ''}`} onClick={() => setTab(t.id)}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'settings' && <AdminSettings settings={settings} onToggle={toggleEval} />}
+      {tab === 'groups' && <AdminGroups showToast={showToast} />}
+      {tab === 'users' && <AdminUsers showToast={showToast} />}
+      {tab === 'status' && <AdminStatus />}
+      {tab === 'scores' && <AdminScores />}
+      {tab === 'feedback' && <AdminFeedback />}
+    </div>
+  );
+}
+
+// Admin - Settings
+function AdminSettings({ settings, onToggle }) {
+  return (
+    <div className="card">
+      <div className="card-title">평가 오픈/클로징</div>
+      {settings.map(s => (
+        <div key={s.id} style={{display:'flex', justifyContent:'space-between', alignItems:'center', padding:'16px 0', borderBottom:'1px solid var(--gray-100)'}}>
+          <div>
+            <div style={{fontWeight:600, fontSize:15}}>{s.day_number}일차</div>
+            <div style={{fontSize:12, color:'var(--gray-400)', marginTop:2}}>
+              {s.opened_at ? `오픈: ${new Date(s.opened_at).toLocaleString('ko-KR')}` : '미오픈'}
+              {s.closed_at ? ` · 마감: ${new Date(s.closed_at).toLocaleString('ko-KR')}` : ''}
+            </div>
+          </div>
+          <div style={{display:'flex', alignItems:'center', gap:12}}>
+            <span className={`status-badge ${s.is_open ? 'status-open' : 'status-closed'}`}>
+              {s.is_open ? '진행중' : '마감'}
+            </span>
+            <button
+              className={`btn btn-sm ${s.is_open ? 'btn-danger' : 'btn-success'}`}
+              onClick={() => onToggle(s.day_number, s.is_open)}
+            >
+              {s.is_open ? '마감하기' : '오픈하기'}
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Admin - Groups
+function AdminGroups({ showToast }) {
+  const [groups, setGroups] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [newGroupName, setNewGroupName] = useState('');
+  const [showMemberModal, setShowMemberModal] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadAll(); }, []);
+
+  const loadAll = async () => {
+    setLoading(true);
+    const [g, u, m] = await Promise.all([
+      query('groups', '*', '', { order: 'day_number,group_name' }),
+      query('users', '*', 'is_admin=eq.false', { order: 'name' }),
+      query('group_members', '*, users!inner(name, employee_id), groups!inner(day_number, group_name)')
+    ]);
+    setGroups(g);
+    setUsers(u);
+    setMembers(m);
+    setLoading(false);
+  };
+
+  const createGroup = async () => {
+    if (!newGroupName.trim()) return;
+    try {
+      await insert('groups', { day_number: selectedDay, group_name: newGroupName.trim() });
+      showToast('조가 생성되었습니다.', 'success');
+      setNewGroupName('');
+      setShowModal(false);
+      loadAll();
+    } catch (err) {
+      showToast('조 생성에 실패했습니다. 중복된 이름인지 확인해주세요.', 'error');
+    }
+  };
+
+  const deleteGroup = async (groupId) => {
+    if (!confirm('이 조를 삭제하시겠습니까? 조원 배정도 함께 삭제됩니다.')) return;
+    try {
+      await remove('groups', `id=eq.${groupId}`);
+      showToast('조가 삭제되었습니다.', 'success');
+      loadAll();
+    } catch (err) {
+      showToast('삭제에 실패했습니다.', 'error');
+    }
+  };
+
+  const addMember = async (groupId, userId) => {
+    try {
+      await insert('group_members', { group_id: groupId, user_id: userId });
+      showToast('조원이 추가되었습니다.', 'success');
+      loadAll();
+    } catch (err) {
+      showToast('추가에 실패했습니다. 이미 배정된 조원인지 확인해주세요.', 'error');
+    }
+  };
+
+  const removeMember = async (memberId) => {
+    try {
+      await remove('group_members', `id=eq.${memberId}`);
+      showToast('조원이 제거되었습니다.', 'success');
+      loadAll();
+    } catch (err) {
+      showToast('제거에 실패했습니다.', 'error');
+    }
+  };
+
+  const dayGroups = groups.filter(g => g.day_number === selectedDay);
+
+  if (loading) return <div className="spinner"></div>;
+
+  return (
+    <div>
+      <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16}}>
+        <div className="category-tabs">
+          {[1,2].map(d => (
+            <button key={d} className={`category-tab ${selectedDay === d ? 'active' : ''}`} onClick={() => setSelectedDay(d)}>
+              {d}일차
+            </button>
+          ))}
+        </div>
+        <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>+ 조 추가</button>
+      </div>
+
+      {dayGroups.length === 0 ? (
+        <div className="card empty-state">
+          <p>{selectedDay}일차 조가 없습니다. 조를 추가해주세요.</p>
+        </div>
+      ) : (
+        dayGroups.map(group => {
+          const groupMembers = members.filter(m => m.group_id === group.id);
+          return (
+            <div key={group.id} className="card">
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12}}>
+                <div className="card-title" style={{marginBottom:0}}>{group.group_name}</div>
+                <div style={{display:'flex', gap:8}}>
+                  <button className="btn btn-secondary btn-sm" onClick={() => setShowMemberModal(group)}>+ 조원 추가</button>
+                  <button className="btn btn-danger btn-sm" onClick={() => deleteGroup(group.id)}>삭제</button>
+                </div>
+              </div>
+              {groupMembers.length === 0 ? (
+                <div style={{color:'var(--gray-400)', fontSize:13, padding:'12px 0'}}>배정된 조원이 없습니다.</div>
+              ) : (
+                <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
+                  {groupMembers.map(m => (
+                    <div key={m.id} style={{
+                      display:'flex', alignItems:'center', gap:8, background:'var(--gray-50)',
+                      padding:'6px 12px', borderRadius:20, fontSize:13
+                    }}>
+                      <span>{m.users.name} ({m.users.employee_id})</span>
+                      <button onClick={() => removeMember(m.id)} style={{
+                        border:'none', background:'none', color:'var(--gray-400)', cursor:'pointer', fontSize:16, lineHeight:1
+                      }}>×</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })
+      )}
+
+      {/* New Group Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2>{selectedDay}일차 조 추가</h2>
+            <div className="form-group">
+              <label>조 이름</label>
+              <input className="form-input" placeholder="예: A조, 1조" value={newGroupName} onChange={e => setNewGroupName(e.target.value)} />
+            </div>
+            <div style={{display:'flex', gap:8, justifyContent:'flex-end', marginTop:16}}>
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>취소</button>
+              <button className="btn btn-primary" onClick={createGroup}>생성</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Member Modal */}
+      {showMemberModal && (
+        <div className="modal-overlay" onClick={() => setShowMemberModal(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2>{showMemberModal.group_name} - 조원 추가</h2>
+            <div style={{maxHeight:'50vh', overflowY:'auto'}}>
+              {users.map(u => {
+                const alreadyIn = members.some(m => m.user_id === u.id && m.group_id === showMemberModal.id);
+                const inOtherGroup = members.some(m => m.user_id === u.id && m.groups.day_number === selectedDay && m.group_id !== showMemberModal.id);
+                return (
+                  <div key={u.id} style={{
+                    display:'flex', justifyContent:'space-between', alignItems:'center',
+                    padding:'10px 0', borderBottom:'1px solid var(--gray-100)'
+                  }}>
+                    <div>
+                      <span style={{fontWeight:500}}>{u.name}</span>
+                      <span style={{fontSize:12, color:'var(--gray-400)', marginLeft:8}}>{u.employee_id}</span>
+                      {inOtherGroup && <span style={{fontSize:11, color:'var(--warning)', marginLeft:8}}>(다른 조 배정됨)</span>}
+                    </div>
+                    {alreadyIn ? (
+                      <span style={{fontSize:12, color:'var(--success)'}}>✓ 배정됨</span>
+                    ) : (
+                      <button className="btn btn-primary btn-sm" onClick={() => addMember(showMemberModal.id, u.id)}>추가</button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{display:'flex', justifyContent:'flex-end', marginTop:16}}>
+              <button className="btn btn-secondary" onClick={() => setShowMemberModal(null)}>닫기</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Admin - Users
+function AdminUsers({ showToast }) {
+  const [users, setUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [newEmpId, setNewEmpId] = useState('');
+  const [newName, setNewName] = useState('');
+  const [bulkText, setBulkText] = useState('');
+  const [showBulk, setShowBulk] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadUsers(); }, []);
+
+  const loadUsers = async () => {
+    const data = await query('users', '*', '', { order: 'employee_id' });
+    setUsers(data);
+    setLoading(false);
+  };
+
+  const addUser = async () => {
+    if (!newEmpId.trim() || !newName.trim()) return;
+    try {
+      await insert('users', { employee_id: newEmpId.trim(), name: newName.trim() });
+      showToast('인원이 추가되었습니다.', 'success');
+      setNewEmpId('');
+      setNewName('');
+      loadUsers();
+    } catch (err) {
+      showToast('추가에 실패했습니다. 중복 사번인지 확인해주세요.', 'error');
+    }
+  };
+
+  const bulkAdd = async () => {
+    const lines = bulkText.trim().split('\n').filter(l => l.trim());
+    let success = 0;
+    let fail = 0;
+    for (const line of lines) {
+      const parts = line.split(/[\t,]/).map(s => s.trim());
+      if (parts.length >= 2) {
+        try {
+          await insert('users', { employee_id: parts[0], name: parts[1] });
+          success++;
+        } catch { fail++; }
+      }
+    }
+    showToast(`${success}명 추가 완료${fail > 0 ? `, ${fail}명 실패` : ''}`, success > 0 ? 'success' : 'error');
+    setBulkText('');
+    setShowBulk(false);
+    loadUsers();
+  };
+
+  const deleteUser = async (id) => {
+    if (!confirm('이 인원을 삭제하시겠습니까?')) return;
+    try {
+      await remove('users', `id=eq.${id}`);
+      showToast('삭제되었습니다.', 'success');
+      loadUsers();
+    } catch (err) {
+      showToast('삭제에 실패했습니다.', 'error');
+    }
+  };
+
+  if (loading) return <div className="spinner"></div>;
+
+  const nonAdmins = users.filter(u => !u.is_admin);
+
+  return (
+    <div>
+      <div style={{display:'flex', gap:8, marginBottom:16}}>
+        <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>+ 개별 추가</button>
+        <button className="btn btn-secondary btn-sm" onClick={() => setShowBulk(true)}>일괄 추가</button>
+      </div>
+
+      <div className="card">
+        <div className="card-title">등록 인원 ({nonAdmins.length}명)</div>
+        <table className="data-table">
+          <thead>
+            <tr><th>사번</th><th>이름</th><th>등록일</th><th></th></tr>
+          </thead>
+          <tbody>
+            {nonAdmins.map(u => (
+              <tr key={u.id}>
+                <td>{u.employee_id}</td>
+                <td>{u.name}</td>
+                <td>{new Date(u.created_at).toLocaleDateString('ko-KR')}</td>
+                <td><button className="btn btn-danger btn-sm" onClick={() => deleteUser(u.id)}>삭제</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Add User Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2>인원 추가</h2>
+            <div className="form-group">
+              <label>사번</label>
+              <input className="form-input" value={newEmpId} onChange={e => setNewEmpId(e.target.value)} placeholder="예: INT001" />
+            </div>
+            <div className="form-group">
+              <label>이름</label>
+              <input className="form-input" value={newName} onChange={e => setNewName(e.target.value)} placeholder="예: 홍길동" />
+            </div>
+            <div style={{display:'flex', gap:8, justifyContent:'flex-end', marginTop:16}}>
+              <button className="btn btn-secondary" onClick={() => setShowModal(false)}>취소</button>
+              <button className="btn btn-primary" onClick={addUser}>추가</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Add Modal */}
+      {showBulk && (
+        <div className="modal-overlay" onClick={() => setShowBulk(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <h2>일괄 추가</h2>
+            <p style={{fontSize:13, color:'var(--gray-500)', marginBottom:12}}>
+              한 줄에 하나씩, 사번과 이름을 탭 또는 쉼표로 구분해서 입력하세요.
+            </p>
+            <textarea
+              className="form-input"
+              rows={8}
+              placeholder={"INT001\t홍길동\nINT002\t김철수\nINT003\t이영희"}
+              value={bulkText}
+              onChange={e => setBulkText(e.target.value)}
+            />
+            <div style={{display:'flex', gap:8, justifyContent:'flex-end', marginTop:16}}>
+              <button className="btn btn-secondary" onClick={() => setShowBulk(false)}>취소</button>
+              <button className="btn btn-primary" onClick={bulkAdd}>일괄 추가</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Admin - Submission Status
+function AdminStatus() {
+  const [evals, setEvals] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadData(); }, []);
+
+  const loadData = async () => {
+    const [e, u, m] = await Promise.all([
+      query('evaluations', '*', '', { order: 'submitted_at.desc' }),
+      query('users', '*', 'is_admin=eq.false'),
+      query('group_members', '*, groups!inner(day_number)')
+    ]);
+    setEvals(e);
+    setUsers(u);
+    setMembers(m);
+    setLoading(false);
+  };
+
+  if (loading) return <div className="spinner"></div>;
+
+  const dayEvals = evals.filter(e => e.day_number === selectedDay);
+  const dayMembers = members.filter(m => m.groups.day_number === selectedDay);
+  const assignedUserIds = [...new Set(dayMembers.map(m => m.user_id))];
+
+  // Calculate submission status per user
+  const userStatuses = assignedUserIds.map(uid => {
+    const u = users.find(usr => usr.id === uid);
+    const userEvals = dayEvals.filter(e => e.evaluator_id === uid);
+    const categories = [...new Set(dayEvals.map(e => e.category))];
+    return {
+      user: u,
+      submitted: userEvals.length,
+      categories: categories.map(cat => ({
+        name: cat,
+        submitted: userEvals.filter(e => e.category === cat).length > 0
+      }))
+    };
+  }).sort((a, b) => a.user?.name?.localeCompare(b.user?.name));
+
+  const totalSubmitted = new Set(dayEvals.map(e => e.evaluator_id)).size;
+
+  return (
+    <div>
+      <div className="category-tabs" style={{marginBottom:16}}>
+        {[1,2].map(d => (
+          <button key={d} className={`category-tab ${selectedDay === d ? 'active' : ''}`} onClick={() => setSelectedDay(d)}>
+            {d}일차
+          </button>
+        ))}
+      </div>
+
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-value">{assignedUserIds.length}</div>
+          <div className="stat-label">배정 인원</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value" style={{color:'var(--success)'}}>{totalSubmitted}</div>
+          <div className="stat-label">제출 완료 (1건 이상)</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value" style={{color:'var(--warning)'}}>{assignedUserIds.length - totalSubmitted}</div>
+          <div className="stat-label">미제출</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-value">{dayEvals.length}</div>
+          <div className="stat-label">총 평가 건수</div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="card-title">인원별 제출 현황</div>
+        <table className="data-table">
+          <thead>
+            <tr><th>이름</th><th>사번</th><th>제출 건수</th><th>상태</th></tr>
+          </thead>
+          <tbody>
+            {userStatuses.map(s => (
+              <tr key={s.user?.id}>
+                <td>{s.user?.name}</td>
+                <td>{s.user?.employee_id}</td>
+                <td>{s.submitted}</td>
+                <td>
+                  <span className={`status-badge ${s.submitted > 0 ? 'status-submitted' : 'status-pending'}`}>
+                    {s.submitted > 0 ? '제출' : '미제출'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// Admin - Score Aggregation
+function AdminScores() {
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [scores, setScores] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => { loadCategories(); }, []);
+
+  const loadCategories = async () => {
+    const crit = await query('eval_criteria', '*', '', { order: 'day_number,category,item_order' });
+    const cats = {};
+    crit.forEach(c => {
+      const key = `${c.day_number}-${c.category}`;
+      if (!cats[key]) cats[key] = { day: c.day_number, category: c.category };
+    });
+    setCategories(Object.values(cats));
+    if (Object.values(cats).length > 0) {
+      const first = Object.values(cats)[0];
+      setSelectedDay(first.day);
+      setSelectedCategory(first.category);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (selectedCategory) loadScores();
+  }, [selectedDay, selectedCategory]);
+
+  const loadScores = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/calculate_scores`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ p_day_number: selectedDay, p_category: selectedCategory })
+      });
+      const data = await res.json();
+      setScores(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setScores([]);
+    }
+    setLoading(false);
+  };
+
+  // Group by evaluatee
+  const grouped = {};
+  scores.forEach(s => {
+    if (!grouped[s.evaluatee_id]) {
+      grouped[s.evaluatee_id] = { name: s.evaluatee_name, employee_id: s.employee_id, items: [], total: 0 };
+    }
+    grouped[s.evaluatee_id].items.push(s);
+    grouped[s.evaluatee_id].total += parseFloat(s.converted_score);
+  });
+
+  const sortedEvaluatees = Object.entries(grouped).sort((a, b) => b[1].total - a[1].total);
+
+  const dayCats = categories.filter(c => c.day === selectedDay);
+
+  return (
+    <div>
+      <div style={{display:'flex', gap:8, marginBottom:16, flexWrap:'wrap'}}>
+        {[1,2].map(d => (
+          <button key={d} className={`category-tab ${selectedDay === d ? 'active' : ''}`} onClick={() => {
+            setSelectedDay(d);
+            const cat = categories.find(c => c.day === d);
+            if (cat) setSelectedCategory(cat.category);
+          }}>
+            {d}일차
+          </button>
+        ))}
+        <span style={{width:1, background:'var(--gray-300)', margin:'0 4px'}}></span>
+        {dayCats.map(c => (
+          <button key={c.category} className={`category-tab ${selectedCategory === c.category ? 'active' : ''}`} onClick={() => setSelectedCategory(c.category)}>
+            {c.category}
+          </button>
+        ))}
+      </div>
+
+      {loading ? <div className="spinner"></div> : (
+        <div className="card" style={{overflowX:'auto'}}>
+          <div className="card-title">{selectedDay}일차 - {selectedCategory} 점수 집계 (100점 환산)</div>
+          {sortedEvaluatees.length === 0 ? (
+            <div className="empty-state"><p>아직 집계할 데이터가 없습니다.</p></div>
+          ) : (
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>순위</th>
+                  <th>이름</th>
+                  <th>사번</th>
+                  {sortedEvaluatees[0]?.[1]?.items.map(item => (
+                    <th key={item.item_name}>{item.item_name}<br/><span style={{fontWeight:400, fontSize:11}}>(평균×5)</span></th>
+                  ))}
+                  <th>합계</th>
+                  <th>유효 평가수</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedEvaluatees.map(([id, data], idx) => (
+                  <tr key={id}>
+                    <td style={{fontWeight:600}}>{idx + 1}</td>
+                    <td>{data.name}</td>
+                    <td>{data.employee_id}</td>
+                    {data.items.sort((a,b) => a.item_order - b.item_order).map(item => (
+                      <td key={item.item_name}>
+                        <div style={{fontWeight:500}}>{item.converted_score}</div>
+                        <div style={{fontSize:11, color:'var(--gray-400)'}}>평균 {item.avg_score}</div>
+                      </td>
+                    ))}
+                    <td style={{fontWeight:700, color:'var(--primary)'}}>{data.total.toFixed(2)}</td>
+                    <td>{data.items[0]?.valid_evaluator_count || 0}명</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Admin - Feedback
+function AdminFeedback() {
+  const [feedback, setFeedback] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const data = await query('v_feedback_summary', '*', '', { order: 'evaluatee_name,submitted_at.desc' });
+      setFeedback(Array.isArray(data) ? data : []);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div className="spinner"></div>;
+
+  if (feedback.length === 0) {
+    return <div className="card empty-state"><p>서술형 피드백이 아직 없습니다.</p></div>;
+  }
+
+  // Group by evaluatee
+  const grouped = {};
+  feedback.forEach(f => {
+    if (!grouped[f.evaluatee_id]) grouped[f.evaluatee_id] = { name: f.evaluatee_name, empId: f.evaluatee_employee_id, items: [] };
+    grouped[f.evaluatee_id].items.push(f);
+  });
+
+  return (
+    <div>
+      {Object.entries(grouped).map(([id, data]) => (
+        <div key={id} className="card">
+          <div className="card-title">{data.name} ({data.empId})</div>
+          {data.items.map((f, i) => (
+            <div key={i} style={{padding:'12px 0', borderBottom:'1px solid var(--gray-100)'}}>
+              <div style={{display:'flex', gap:8, marginBottom:6}}>
+                <span style={{fontSize:12, color:'var(--gray-400)'}}>
+                  {f.is_self_eval ? '본인' : f.evaluator_name} · {f.category}
+                </span>
+              </div>
+              {f.strengths && (
+                <div style={{fontSize:13, marginBottom:4}}>
+                  <span style={{color:'var(--success)', fontWeight:500}}>잘한 점:</span> {f.strengths}
+                </div>
+              )}
+              {f.improvements && (
+                <div style={{fontSize:13}}>
+                  <span style={{color:'var(--warning)', fontWeight:500}}>개선할 점:</span> {f.improvements}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================
+// Main App
+// ============================================================
+function App() {
+  const [user, setUser] = useState(null);
+  const [screen, setScreen] = useState('login');
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [settings, setSettings] = useState([]);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
+
+  const loadSettings = async () => {
+    try {
+      const data = await query('eval_settings', '*');
+      setSettings(data);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    if (user) loadSettings();
+  }, [user]);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    if (userData.is_admin) {
+      setScreen('admin');
+    } else {
+      setScreen('daySelect');
+    }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setScreen('login');
+    setSelectedDay(null);
+  };
+
+  const handleDaySelect = (day) => {
+    setSelectedDay(day);
+    setScreen('evaluation');
+  };
+
+  if (screen === 'login') {
+    return (
+      <>
+        <LoginScreen onLogin={handleLogin} />
+        {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+      </>
+    );
+  }
+
+  return (
+    <div>
+      <header className="app-header">
+        <h1>📋 피어그룹 평가</h1>
+        <div className="header-right">
+          <span className="user-badge">
+            {user.is_admin ? '👑 관리자' : `${user.name} (${user.employee_id})`}
+          </span>
+          {user.is_admin && screen !== 'admin' && (
+            <button className="btn btn-secondary btn-sm" onClick={() => setScreen('admin')}>관리자 패널</button>
+          )}
+          <button className="btn btn-secondary btn-sm" onClick={handleLogout}>로그아웃</button>
+        </div>
+      </header>
+
+      {screen === 'admin' && <AdminPanel user={user} showToast={showToast} />}
+      {screen === 'daySelect' && <DaySelector settings={settings} onSelect={handleDaySelect} />}
+      {screen === 'evaluation' && (
+        <EvaluationScreen
+          user={user}
+          dayNumber={selectedDay}
+          onBack={() => { setScreen('daySelect'); setSelectedDay(null); loadSettings(); }}
+          showToast={showToast}
+        />
+      )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>
