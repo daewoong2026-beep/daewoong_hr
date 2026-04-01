@@ -42,7 +42,7 @@
 <div id="root"></div>
 <script type="text/babel">
 const SB_URL='https://pmfrxiccvvsovofcgcly.supabase.co';const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBtZnJ4aWNjdnZzb3ZvZmNnY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MzQwMzQsImV4cCI6MjA5MDUxMDAzNH0._NUYL2RqyszKOn_xPQnS7qnhDW6JNFUN0g3TZtHZORc';const H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};const HJ={...H,'Content-Type':'application/json','Prefer':'return=representation'};
-async function Q(t,s='*',f='',o={}){let u=`${SB_URL}/rest/v1/${t}?select=${encodeURIComponent(s)}`;if(f)u+=`&${f}`;if(o.order)u+=`&order=${o.order}`;return(await fetch(u,{headers:H})).json();}
+async function Q(t,s='*',f='',o={}){let u=`${SB_URL}/rest/v1/${t}?select=${encodeURIComponent(s)}&limit=10000`;if(f)u+=`&${f}`;if(o.order)u+=`&order=${o.order}`;return(await fetch(u,{headers:H})).json();}
 async function INS(t,b){const r=await fetch(`${SB_URL}/rest/v1/${t}`,{method:'POST',headers:HJ,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
 async function UPD(t,b,f){const r=await fetch(`${SB_URL}/rest/v1/${t}?${f}`,{method:'PATCH',headers:HJ,body:JSON.stringify(b)});if(!r.ok)throw new Error(await r.text());return r.json();}
 async function DEL(t,f){const r=await fetch(`${SB_URL}/rest/v1/${t}?${f}`,{method:'DELETE',headers:H});if(!r.ok)throw new Error(await r.text());}
